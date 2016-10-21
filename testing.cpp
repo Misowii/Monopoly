@@ -74,6 +74,14 @@ Character DetermineCharacter(string inputname) {
 		return NightElf();
 	else if (inputname == "Gnome")
 		return Gnome();
+	/*else if (inputname == "Orc")
+		return Orc();
+	else if (inputname == "Undead")
+		return Undead();
+	else if (inputname == "Tauren")
+		return Tauren();
+	else if (inputname == "Troll")
+		return Troll();*/
 };
 
 void CreatePlayer(string nam, Character rac, int playernumber) {
