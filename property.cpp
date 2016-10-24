@@ -9,17 +9,28 @@ Property::Property() {
 		name = "Unnamed";
 		int cost = 100;
 		color = "White";
-		int owner = 100;
-		int rent = 50;
+		int owner = 99;
+		int rentincrease = 50;
+		int housecost = 50;
+		rent = 0;
+		housenumber = 0;
 };
 
 Property::Property(string inname, int incost, int inrent, string incolor) {
 	name = inname;
 	cost = incost;
-	rent = inrent;
+	rentincrease = inrent;
+	rent = 0;
 	color = incolor;
 	owner = 99;
+	housecost = 50;
+	housenumber = 0;
 };
+
+void Property::AddHouse() {
+	Property::housenumber = Property::housenumber + 1;
+};
+
 Property CreateStart() {
 	return Property("Start", 0, 0, "White");
 };
@@ -50,7 +61,10 @@ void PrintPropertyNames(Property PropertyArray[]) {
 	for (int i = 0; i < SizeofMap; i++) {
 		string temp;
 		temp = PropertyArray[i].name;
+		int temp2;
+		temp2 = PropertyArray[i].owner;
 		cout << "\n Property name " << temp << "\n";
+		cout << "Property owned by Player " << temp2 << "\n";
 	};
 };
 

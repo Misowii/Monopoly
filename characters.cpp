@@ -1,6 +1,7 @@
 #include "characters.h"
 #include <string>
-const int SizeofMap = 40;
+const int SizeofMap = 5;
+const int PassGoAmount = 200;
 
 Character::Character() {
 	location = 0;
@@ -14,8 +15,21 @@ void Character::move(int steps) {
 		Character::location = Character::location + steps;
 	}
 	else {
-			Character::location = Character::location - steps;
+			int temp = abs(Character::location - (SizeofMap));
+			int tempsteps = abs(steps - temp);
+			Character::AddMoney(PassGoAmount);
+			Character::location = 0;
+			Character::move(tempsteps);
+			
 	}
+};
+
+void Character::RemoveMoney(int amount) {
+	Character::currentMoney = Character::currentMoney - amount;
+};
+
+void Character::AddMoney(int amount) {
+	Character::currentMoney = Character::currentMoney + amount;
 };
 
 string Character::getRace() {

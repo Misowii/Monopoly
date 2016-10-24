@@ -127,7 +127,7 @@ void BuyProperty(Player curPlayer){
 			cout << "\nPlayer does not have enough money!\n";
 		}
 		else {
-			curPlayer.selectedRace.currentMoney = (playermoney - cost);
+			PlayerArray[CurrentPlayer].selectedRace.RemoveMoney(cost);
 			PropertyArray[loc].owner = CurrentPlayer;
 			cout << "\nProperty now owned by Player " << CurrentPlayer << "\n";
 		};
@@ -136,6 +136,26 @@ void BuyProperty(Player curPlayer){
 		cout << "\nProperty already owned by Player " << PropertyArray[loc].owner << "!\n";
 		cout << "Please use BuyFrom command\n";
 	};
+};
+
+void BuyHouse(Player curPlayer) {
+	int loc = curPlayer.selectedRace.location;
+	int playermoney = curPlayer.selectedRace.currentMoney;
+	int cost = PropertyArray[loc].housecost;
+	if (PropertyArray[loc].owner == CurrentPlayer){
+			if (playermoney < cost) {
+					cout << "Player does not have enough money!\n";
+			}
+			else {
+				curPlayer.selectedRace.RemoveMoney(cost);
+				PropertyArray[loc].rent = (PropertyArray[loc].rent + PropertyArray[loc].rentincrease);
+				PropertyArray[loc].AddHouse();
+				cout << "Added house to property. Current rent is " << PropertyArray[loc].rent << "\n";
+			}
+	}
+	else {
+		cout << "Property not owned by Player, please purchase property first to add a house.\n";
+	}
 };
 
 void DisplayPlayers() {
@@ -185,7 +205,7 @@ bool NextCommand() {
 		return true;
 	}
 	else if (inputcommand == "BuyProperty") {
-		if (CurrentPlayer.selectedRace.location == 0){
+		if (PlayerArray[CurrentPlayer].selectedRace.location == 0){
 			cout << "Cannot buy start location" << "\n";
 			return true;
 		}
@@ -194,7 +214,15 @@ bool NextCommand() {
 		return true;
 		}
 	}
+	else if (inputcommand == "BoardStatus") {
+			PrintPropertyNames(PropertyArray);
+			return true;
+	}
+	else if (inputcommand == "BuyFrom") {
+		return true;
+	}
 	else if (inputcommand == "BuyHouse") {
+		BuyHouse(PlayerArray[CurrentPlayer]);
 		return true;
 	}
 	else if (inputcommand == "Quit")

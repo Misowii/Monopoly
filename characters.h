@@ -1,6 +1,7 @@
 #include <string>
 using namespace std;
 
+
 class Character {
 	public:
 		int location;
@@ -10,7 +11,9 @@ class Character {
 		string race;
 		Character();
 		string getRace();
-		
+		void RemoveMoney(int amount);
+		void AddMoney(int amount);
+
 };
 
 class Human : public Character {
