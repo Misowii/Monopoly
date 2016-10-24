@@ -8,6 +8,8 @@
 using namespace std;
 int NumberofPlayers;
 int CurrentPlayer;
+const int SizeofMap = 5;
+
 class Dice {
 	int die1, die2;
 	public:
@@ -65,6 +67,9 @@ void changePlayer() {
 
 Player *PlayerArray;
 
+Property PropertyArray[SizeofMap];
+
+
 Character DetermineCharacter(string inputname) {
 	if (inputname == "Dwarf")
 		return Dwarf();
@@ -113,6 +118,26 @@ void NewGame() {
 	cout << "\nGame is Initialized.\n";
 };
 
+void BuyProperty(Player curPlayer){
+	int loc = curPlayer.selectedRace.location;
+	int playermoney = curPlayer.selectedRace.currentMoney;
+	int cost = PropertyArray[loc].cost;
+	if (PropertyArray[loc].owner > NumberofPlayers){
+		if (playermoney < cost) {
+			cout << "\nPlayer does not have enough money!\n";
+		}
+		else {
+			curPlayer.selectedRace.currentMoney = (playermoney - cost);
+			PropertyArray[loc].owner = CurrentPlayer;
+			cout << "\nProperty now owned by Player " << CurrentPlayer << "\n";
+		};
+	}
+	else {
+		cout << "\nProperty already owned by Player " << PropertyArray[loc].owner << "!\n";
+		cout << "Please use BuyFrom command\n";
+	};
+};
+
 void DisplayPlayers() {
 	for ( int n = 0; n < NumberofPlayers; n++) {
 		Player tempplayer = PlayerArray[n];
@@ -122,7 +147,7 @@ void DisplayPlayers() {
 };
 bool RollFlag = true;
 
- bool NextCommand() {
+bool NextCommand() {
 	 cout << "\nInput game command.\n";
 	string inputcommand;
 	cin >> inputcommand;
@@ -144,19 +169,34 @@ bool RollFlag = true;
 		}
 	}
 	else if (inputcommand == "Location"){
-		cout << "\n\nCurrent Location\n" << PlayerArray[CurrentPlayer].selectedRace.location << "\n";
+		int temploc = PlayerArray[CurrentPlayer].selectedRace.location;
+		cout << "\n\nCurrent Location\n" << temploc << "\n";
+		cout << "Current location is " << PropertyArray[temploc].name << "\n";
+		cout << "Current cost to buy property is " << PropertyArray[temploc].cost << "\n";
+		cout << "Property owned by Player " << PropertyArray[temploc].owner << "\n";
 		return true;
 	}
 	else if (inputcommand == "NewGame") {
 		NewGame();
 		return true;
 	}
-	else if (inputcommand == "CheckMoney")
+	else if (inputcommand == "CheckMoney"){
+		cout << "\nCurrent Balance\n" << PlayerArray[CurrentPlayer].selectedRace.currentMoney << "\n";
 		return true;
-	else if (inputcommand == "BuyProperty")
+	}
+	else if (inputcommand == "BuyProperty") {
+		if (CurrentPlayer.selectedRace.location == 0){
+			cout << "Cannot buy start location" << "\n";
+			return true;
+		}
+		else{
+		BuyProperty(PlayerArray[CurrentPlayer]);
 		return true;
-	else if (inputcommand == "BuyHouse")
+		}
+	}
+	else if (inputcommand == "BuyHouse") {
 		return true;
+	}
 	else if (inputcommand == "Quit")
 		return false;
 	else if (inputcommand == "EndTurn") {
@@ -177,8 +217,9 @@ int main() {
 
 	/*DisplayPlayers();*/
 	bool Status = true;
+	CreateProperties(PropertyArray);
 	while (Status == true) {
-		cout << "Current Player is " << CurrentPlayer + 1 << "\n";
+		cout << "Current Player is " << CurrentPlayer << "\n";
 		Status = NextCommand();
 	};	
 	

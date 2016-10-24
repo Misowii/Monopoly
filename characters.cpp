@@ -1,6 +1,6 @@
 #include "characters.h"
 #include <string>
-static int SizeofMap = 25;
+const int SizeofMap = 40;
 
 Character::Character() {
 	location = 0;
@@ -24,16 +24,20 @@ string Character::getRace() {
 
 Human::Human() {
 	Character::race = "Human";
+	Character::currentMoney = 800;
 };
 
 NightElf::NightElf() {
 	Character::race = "NightElf";
+	Character::currentMoney = 700;
 };
 
 Dwarf::Dwarf() {
 	Character::race = "Dwarf";
+	Character::currentMoney = 1000;
 };
 
 Gnome::Gnome() {
 	Character::race = "Gnome";
+	Character::currentMoney = 900;
 };

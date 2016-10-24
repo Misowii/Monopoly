@@ -10,6 +10,7 @@ class Character {
 		string race;
 		Character();
 		string getRace();
+		
 };
 
 class Human : public Character {
